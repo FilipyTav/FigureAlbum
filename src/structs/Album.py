@@ -1,14 +1,11 @@
+from __future__ import annotations
+
 from structs.Figurine import Figurine, SFigurineNode
 from utils.colors import Colors
 from utils.config import TOTAL_FIGURINES
 from utils.strings import (
     SEPARATOR,
-    SEPARATOR_WIDTH,
-    centered_msg,
     clean_string,
-    format_error,
-    print_section_name,
-    truncate_string,
 )
 
 
@@ -297,7 +294,7 @@ class FigurineAlbum:
         # TODO: return amount of repeated figurine as well
         repeated_ids: list[int] = []
         for id in self.__registered:
-            if self.__registered[id] > 1:
+            if self.is_repeated(id):
                 repeated_ids.append(id)
 
         return self.find_by_ids(repeated_ids)
@@ -308,3 +305,26 @@ class FigurineAlbum:
             if count > 1:
                 total_repeats += count - 1
         return total_repeats
+
+    def is_repeated(self, id: int) -> bool:
+        return self.__registered.get(id, 0) > 1
+
+    def propose_exchange(
+        self,
+        target: FigurineAlbum,
+        give_fig: Figurine | None,
+        take_fig: Figurine | None,
+    ) -> bool:
+        if give_fig is None or take_fig is None:
+            return False
+
+        if not (self.is_repeated(give_fig.id) and target.is_repeated(take_fig.id)):
+            return False
+
+        self.remove_one_copy(give_fig.id)
+        self.append(take_fig)
+
+        target.remove_one_copy(take_fig.id)
+        target.append(give_fig)
+
+        return True
