@@ -75,7 +75,7 @@ class FigurineAlbum:
         return self.insert_at(0, f)
 
     def find_by_name(self, name: str) -> Figurine | None:
-        if self.is_empty():
+        if self.is_empty() or not name:
             print("Lista vazia.")
             return None
 
@@ -100,6 +100,21 @@ class FigurineAlbum:
             current = current.next
 
         return None
+
+    def find_by_country(self, country: str) -> list[Figurine]:
+        if self.is_empty() or not country:
+            return []
+
+        matches: list[Figurine] = []
+        current: SFigurineNode | None = self.__head
+        while current:
+            assert current.data
+            if clean_string(current.data.country) == clean_string(country):  # type: ignore
+                matches.append(current.data)
+
+            current = current.next
+
+        return matches
 
     def remove_at(self, pos: int) -> bool:
         """Remove at pos"""

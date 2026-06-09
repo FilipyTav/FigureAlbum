@@ -98,6 +98,18 @@ class Figurine:
             f"{self.rarity.fgcolor}{Colors.BOLD}{rarity_str:<12}{Colors.RESET}"
         )
 
+    def __str__(self) -> str:
+        pos: str = self.position.name if self.position else "N/A"
+
+        if self.rarity:
+            badge: str = (
+                f"{self.rarity.fgcolor}{Colors.BOLD}{self.rarity.display_name.upper()}{Colors.RESET}"
+            )
+        else:
+            badge: str = "[N/A]"
+
+        return f"#{self.id} {self.name} ({self.country}) — {pos} * {badge}"
+
 
 class SFigurineNode:
     def __init__(self, data: Figurine, next: SFigurineNode | None = None) -> None:
