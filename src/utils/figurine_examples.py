@@ -1,3 +1,5 @@
+import random
+
 from structs.Figurine import Figurine
 from utils.types import FigurineRarity, FootballPosition
 
@@ -18,6 +20,14 @@ class FigurineExamples:
             9: Figurine(9, "Federico Dimarco", "Italy", FootballPosition.LWB, FigurineRarity.COMMON)
         }
         # fmt: on
+
+    def draw_pack(self, pack_size: int = 5) -> list[Figurine]:
+        pool: list[Figurine] = list(self.cards.values())
+
+        weights: list[float] = [card.rarity.weight for card in pool]
+        print(weights)
+
+        return random.choices(pool, weights=weights, k=pack_size)
 
     def get(self, card_id: int) -> Figurine | None:
         return self.cards.get(card_id)
