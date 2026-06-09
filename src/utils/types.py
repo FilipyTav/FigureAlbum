@@ -1,6 +1,10 @@
 from enum import Enum
 
 
+class Screen(Enum):
+    pass
+
+
 class FigurineRarity(Enum):
     COMMON = ("Common", "#9d9d9d", 70.0)
     RARE = ("Rare", "#0070dd", 25.0)
