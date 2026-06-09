@@ -16,7 +16,7 @@ class Figurine:
         self.name: str = name
         self.country: str = country
         self.position: FootballPosition = position
-        self.rariry: FigurineRarity = rarity
+        self.rarity: FigurineRarity = rarity
 
 
 class SFigurineNode:

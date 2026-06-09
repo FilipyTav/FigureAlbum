@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+from utils.colors import Colors
+
 
 class Screen(Enum):
     # Helpers
@@ -13,22 +15,27 @@ class Screen(Enum):
 
 
 class FigurineRarity(Enum):
-    COMMON = ("Common", "#9d9d9d", 70.0)
-    RARE = ("Rare", "#0070dd", 25.0)
-    LEGENDARY = ("Legendary", "#ff8000", 5.0)
+    # Format: (Display Name, Color Enum Code, Drop Weight)
+    # COMMON = ("Common", "#9d9d9d", 70.0)
+    # RARE = ("Rare", "#0070dd", 25.0)
+    # LEGENDARY = ("Legendary", "#ff8000", 5.0)
 
-    def __init__(self, display_name: str, color_hex: str, weight: float):
-        self._display_name = display_name
-        self._color_hex = color_hex
-        self._weight = weight
+    COMMON = ("Common", Colors.LIGHT_GRAY, 70.0)
+    RARE = ("Rare", Colors.BLUE, 25.0)
+    LEGENDARY = ("Legendary", Colors.GOLD, 5.0)
+
+    def __init__(self, display_name: str, color: Colors, weight: float):
+        self._display_name: str = display_name
+        self._color: Colors = color
+        self._weight: float = weight
 
     @property
     def display_name(self) -> str:
         return self._display_name
 
     @property
-    def color(self) -> str:
-        return self._color_hex
+    def color(self) -> Colors:
+        return self._color
 
     @property
     def weight(self) -> float:
