@@ -1,35 +1,34 @@
 from structs.Album import FigurineAlbum
 from structs.Figurine import Figurine
 from structs.Queue import FigurineQueue
+from utils.figurine_examples import FigurineExamples
 from utils.types import FigurineRarity, FootballPosition
 
 
 def main() -> int:
+    examples: FigurineExamples = FigurineExamples()
+
     history: FigurineQueue = FigurineQueue()
+
     album: FigurineAlbum = FigurineAlbum()
+    album2: FigurineAlbum = FigurineAlbum()
 
-    f1: Figurine = Figurine(0, "test", "BRA", FootballPosition.CB, FigurineRarity.RARE)
-    f2: Figurine = Figurine(
-        1, "test2", "JAP", FootballPosition.RWB, FigurineRarity.LEGENDARY
-    )
-    f3: Figurine = Figurine(
-        2, "testc", "BEL", FootballPosition.AM, FigurineRarity.COMMON
-    )
+    # history.enqueue(f1)
+    # history.enqueue(f2)
+    # history.enqueue(f3)
 
-    history.enqueue(f1)
-    history.enqueue(f2)
-    history.enqueue(f3)
-
-    album.append(f1)
-    album.append(f2)
-    album.prepend(f3)
+    album.append(examples.get(0))
+    album.append(examples.get(1))
+    album.prepend(examples.get(2))
+    album.append(examples.get(1))
 
     # print(album.find_by_id(1))
     # print(album.find_by_name("testc"))
     # [print(f) for f in album.find_by_country("BRA")]
 
-    history.display_for_admin()
-    history.display_cards()
+    [print(r) for r in album.get_repeated()]
+    album.display_for_admin()
+    album.display_cards()
 
     return 0
 

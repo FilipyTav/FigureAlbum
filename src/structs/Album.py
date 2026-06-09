@@ -73,12 +73,18 @@ class FigurineAlbum:
     def len(self) -> int:
         return self.__count
 
-    def append(self, f: Figurine) -> bool:
+    def append(self, f: Figurine | None) -> bool:
         """Add to end"""
+        if not f:
+            return False
+
         return self.insert_at(self.len(), f)
 
-    def prepend(self, f: Figurine) -> bool:
+    def prepend(self, f: Figurine | None) -> bool:
         """Add to start"""
+        if not f:
+            return False
+
         return self.insert_at(0, f)
 
     def find_by_name(self, name: str) -> Figurine | None:
@@ -288,6 +294,7 @@ class FigurineAlbum:
         return self.remove_by_id(id)
 
     def get_repeated(self) -> list[Figurine]:
+        # TODO: return amount of repeated figurine as well
         repeated_ids: list[int] = []
         for id in self.__registered:
             if self.__registered[id] > 1:
