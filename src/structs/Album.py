@@ -1,5 +1,6 @@
 from structs.Figurine import Figurine, SFigurineNode
 from utils.colors import Colors
+from utils.config import TOTAL_FIGURINES
 from utils.strings import (
     SEPARATOR,
     SEPARATOR_WIDTH,
@@ -145,7 +146,7 @@ class FigurineAlbum:
         return False
 
     def remove_by_id(self, id: int) -> bool:
-        """Remove figurine by id"""
+        """Remove figurine by id in a single pass."""
         if id < 0 or self.is_empty():
             return False
 
@@ -153,7 +154,6 @@ class FigurineAlbum:
 
         # Removes the head
         if self.__head.data.id == id:  # type: ignore
-            fig = self.__head.data
             self.__head = self.__head.next
             self.__count -= 1
 
@@ -163,11 +163,9 @@ class FigurineAlbum:
             return True
 
         current: SFigurineNode | None = self.__head
-        index: int = 0
-        # Avoids searching tail
+
         while current and current.next:
             if current.next.data.id == id:  # type: ignore
-                fig = current.next.data
                 node_to_remove: SFigurineNode = current.next
 
                 if node_to_remove == self.__tail:
@@ -179,9 +177,11 @@ class FigurineAlbum:
                 return True
 
             current = current.next
-            index += 1
 
         return False
+
+    def get_pct_completion(self) -> float:
+        return self.len() / TOTAL_FIGURINES
 
     def __str__(self) -> str:
         return f"FigurineAlbum(Size: {self.__count}, Head: {self.__head.data.name if self.__head else 'None'})"  # type: ignore

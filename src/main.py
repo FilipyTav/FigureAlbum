@@ -24,9 +24,9 @@ def main() -> int:
     album.append(f2)
     album.prepend(f3)
 
-    print(album.find_by_id(1))
-    print(album.find_by_name("testc"))
-    [print(f) for f in album.find_by_country("BRA")]
+    # print(album.find_by_id(1))
+    # print(album.find_by_name("testc"))
+    # [print(f) for f in album.find_by_country("BRA")]
 
     history.display_for_admin()
     history.display_cards()
