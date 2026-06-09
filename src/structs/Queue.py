@@ -39,6 +39,12 @@ class FigurineQueue:
         self.__count -= 1
         return fig
 
+    def peek(self) -> Figurine | None:
+        if self.is_empty():
+            return None
+
+        return self.__head.data  # type: ignore
+
     def is_empty(self) -> bool:
         return not (self.__head and self.__tail)
 
