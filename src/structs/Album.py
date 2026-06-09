@@ -6,6 +6,7 @@ from structs.Figurine import Figurine, SFigurineNode
 from structs.Queue import FigurineQueue
 from utils.colors import Colors
 from utils.config import DATA_DIR, TOTAL_FIGURINES
+from utils.figurine_examples import FigurineExamples
 from utils.strings import (
     SEPARATOR,
     clean_string,
@@ -337,7 +338,10 @@ class FigurineAlbum:
 
         return True
 
-    def save_to_csv(self, filepath: pathlib.Path = DATA_DIR / "data.csv") -> None:
+    def save_csv(self, filepath: pathlib.Path = DATA_DIR / "data.csv") -> bool:
+        if not filepath.exists():
+            return False
+
         try:
             with open(filepath, mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.writer(file)
@@ -371,6 +375,34 @@ class FigurineAlbum:
             )
         except IOError as e:
             print(format_error(f"Could not save album data to {filepath}. ({e})"))
+            return False
+
+        return True
+
+    def load_csv(self, filepath: pathlib.Path, examples: FigurineExamples) -> bool:
+        if not filepath.exists():
+            return False
+
+        try:
+            with open(filepath, mode="r", newline="", encoding="utf-8") as file:
+                reader = csv.reader(file)
+                next(reader)
+                for row in reader:
+                    id, name, country, position, rarity, qty = row
+                    fig: Figurine | None = examples.get(int(id))
+                    if fig:
+                        for _ in range(int(qty)):
+                            self.append(fig)
+
+        except IOError as e:
+            print(format_error(f"Could not load album data from {filepath}. ({e})"))
+            return False
+
+        except ValueError:
+            print(format_error(f"Malformatted row data in file {filepath}."))
+            return False
+
+        return True
 
     def __iter__(self):
         return iter([self.__head, self.__tail, self.__count, self.__registered])

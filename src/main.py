@@ -14,15 +14,15 @@ def main() -> int:
     album: FigurineAlbum = FigurineAlbum()
     album2: FigurineAlbum = FigurineAlbum()
 
-    album.append(examples.get(0))
-    album.append(examples.get(1))
-    album.prepend(examples.get(2))
-    album.append(examples.get(1))
-
-    album2.append(examples.get(3))
-    album2.append(examples.get(5))
-    album2.prepend(examples.get(5))
-    album2.append(examples.get(7))
+    # album.append(examples.get(0))
+    # album.append(examples.get(1))
+    # album.prepend(examples.get(2))
+    # album.append(examples.get(1))
+    #
+    # album2.append(examples.get(3))
+    # album2.append(examples.get(5))
+    # album2.prepend(examples.get(5))
+    # album2.append(examples.get(7))
 
     # print(album.find_by_id(1))
     # print(album.find_by_name("testc"))
@@ -44,20 +44,24 @@ def main() -> int:
     #     )
     # )
     #
-    # album.display_for_admin()
-    # [print(r) for r in album.get_repeated()]
-    #
-    # print()
-    # album2.display_for_admin()
-    # [print(r) for r in album2.get_repeated()]
-    # print()
     #
     # history.display_for_admin()
     # a = history.get_history()
     # print(a)
 
-    album.save_to_csv(DATA_DIR / "album1.csv")
-    album2.save_to_csv(DATA_DIR / "album2.csv")
+    # album.save_to_csv(DATA_DIR / "album1.csv")
+    # album2.save_to_csv(DATA_DIR / "album2.csv")
+
+    album.load_csv(DATA_DIR / "album1.csv", examples)
+    album2.load_csv(DATA_DIR / "album2.csv", examples)
+
+    album.display_for_admin()
+    [print(r) for r in album.get_repeated()]
+
+    print()
+    album2.display_for_admin()
+    [print(r) for r in album2.get_repeated()]
+    print()
 
     return 0
 
