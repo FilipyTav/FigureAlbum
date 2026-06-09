@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from structs.Figurine import Figurine, SFigurineNode
+from structs.Queue import FigurineQueue
 from utils.colors import Colors
 from utils.config import TOTAL_FIGURINES
 from utils.strings import (
@@ -314,6 +315,7 @@ class FigurineAlbum:
         target: FigurineAlbum,
         give_fig: Figurine | None,
         take_fig: Figurine | None,
+        history: FigurineQueue,
     ) -> bool:
         if give_fig is None or take_fig is None:
             return False
@@ -326,5 +328,8 @@ class FigurineAlbum:
 
         target.remove_one_copy(take_fig.id)
         target.append(give_fig)
+
+        history.enqueue(give_fig)
+        history.enqueue(take_fig)
 
         return True
