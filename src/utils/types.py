@@ -1,8 +1,15 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class Screen(Enum):
-    pass
+    # Helpers
+    # ------------------------
+    MAIN = auto()
+    BACK = auto()
+    EXIT = auto()
+    STAY = auto()
+    TODO = auto()
+    # ------------------------
 
 
 class FigurineRarity(Enum):
