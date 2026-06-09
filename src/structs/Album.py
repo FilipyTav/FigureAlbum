@@ -108,6 +108,21 @@ class FigurineAlbum:
 
         return None
 
+    def find_by_ids(self, ids: list[int]) -> list[Figurine]:
+        if self.is_empty() or not ids:
+            return []
+
+        current: SFigurineNode | None = self.__head
+        matches: list[Figurine] = []
+        while current:
+            assert current.data
+            if current.data.id in ids:
+                matches.append(current.data)
+
+            current = current.next
+
+        return matches
+
     def find_by_country(self, country: str) -> list[Figurine]:
         if self.is_empty() or not country:
             return []
@@ -271,3 +286,18 @@ class FigurineAlbum:
         del self.__registered[id]
 
         return self.remove_by_id(id)
+
+    def get_repeated(self) -> list[Figurine]:
+        repeated_ids: list[int] = []
+        for id in self.__registered:
+            if self.__registered[id] > 1:
+                repeated_ids.append(id)
+
+        return self.find_by_ids(repeated_ids)
+
+    def count_repeated(self) -> int:
+        total_repeats: int = 0
+        for count in self.__registered.values():
+            if count > 1:
+                total_repeats += count - 1
+        return total_repeats
