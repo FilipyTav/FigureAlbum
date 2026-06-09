@@ -1,3 +1,5 @@
+import os
+
 from utils.colors import Colors
 
 
@@ -26,6 +28,28 @@ def print_section_end(sub: bool = False, color: Colors = Colors.MAGENTA) -> None
     sep: str = SEPARATOR if not sub else SUB_SEPARATOR
 
     print(f"\n{color}{Colors.BOLD}{sep}{Colors.RESET}")
+
+
+def print_section_name_full(
+    name: str, sub: bool = False, color: Colors = Colors.MAGENTA
+) -> None:
+    # 1. Get the current, real-time terminal width (fallback to 80 if running inside an IDE console)
+    try:
+        term_width = os.get_terminal_size().columns
+    except OSError:
+        term_width = 80
+
+    # 2. Determine your separator character based on the 'sub' flag
+    # (Assuming SEPARATOR and SUB_SEPARATOR are strings like "=" and "-")
+    char = "=" if not sub else "-"
+
+    # 3. Create the full-width separator line
+    sep_line = char * term_width
+
+    # 4. Print it out using your exact string centering format modifier `^`
+    print(f"\n{color}{Colors.BOLD}{sep_line}")
+    print(f"{name:^{term_width}}")
+    print(f"{sep_line}{Colors.RESET}\n")
 
 
 def format_error(msg: str) -> str:
@@ -57,3 +81,23 @@ def get_visible_len(text: str) -> int:
             length += 1
 
     return length
+
+
+def print_centered_header(text: str, fill_char: str = "=") -> None:
+    try:
+        terminal_width = os.get_terminal_size().columns
+    except OSError:
+        terminal_width = 80
+
+    core_text: str = f" {text} "
+
+    padding_length: int = max(0, (terminal_width - len(core_text)) // 2)
+
+    padding: str = fill_char * padding_length
+
+    full_line: str = f"{padding}{core_text}{padding}"
+
+    if len(full_line) < terminal_width:
+        full_line += fill_char
+
+    print(f"\n{Colors.BOLD}{Colors.GOLD}{full_line}{Colors.RESET}")

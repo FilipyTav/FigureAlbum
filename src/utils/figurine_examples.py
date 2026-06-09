@@ -25,7 +25,6 @@ class FigurineExamples:
         pool: list[Figurine] = list(self.cards.values())
 
         weights: list[float] = [card.rarity.weight for card in pool]
-        print(weights)
 
         return random.choices(pool, weights=weights, k=pack_size)
 

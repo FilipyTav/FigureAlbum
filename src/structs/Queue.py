@@ -1,6 +1,14 @@
 from structs.Figurine import Figurine, SFigurineNode
 from utils.colors import Colors
-from utils.strings import SEPARATOR, SEPARATOR_WIDTH, truncate_string
+from utils.strings import (
+    SEPARATOR,
+    SEPARATOR_WIDTH,
+    centered_msg,
+    print_centered_header,
+    print_section_name,
+    print_section_name_full,
+    truncate_string,
+)
 
 
 class FigurineQueue:
@@ -116,3 +124,25 @@ class FigurineQueue:
 
         print(f"Total items: {Colors.BOLD}{position_counter - 1}{Colors.RESET}")
         print(SEPARATOR)
+
+    def get_history(self) -> list[tuple[Figurine, Figurine]]:
+        """Returns (fig_out, fig_in)"""
+        current: SFigurineNode | None = self.__head
+        history_list: list[tuple[Figurine, Figurine]] = []
+
+        if not current:
+            return history_list
+
+        while current and current.next:
+            card_out: Figurine | None = current.data
+            card_in: Figurine | None = current.next.data
+
+            if card_out is not None and card_in is not None:
+                history_list.append((card_out, card_in))
+
+            if current.next:
+                current = current.next.next
+            else:
+                current = current.next
+
+        return history_list

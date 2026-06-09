@@ -13,9 +13,12 @@ def main() -> int:
     album: FigurineAlbum = FigurineAlbum()
     album2: FigurineAlbum = FigurineAlbum()
 
-    # history.enqueue(f1)
-    # history.enqueue(f2)
-    # history.enqueue(f3)
+    history.enqueue(examples.get(0))
+    history.enqueue(examples.get(1))
+    history.enqueue(examples.get(2))
+    history.enqueue(examples.get(2))
+    a = history.get_history()
+    print(a)
 
     album.append(examples.get(0))
     album.append(examples.get(1))
@@ -55,8 +58,6 @@ def main() -> int:
     # album2.display_for_admin()
     # [print(r) for r in album2.get_repeated()]
     # print()
-
-    [print(f) for f in examples.draw_pack(10)]
 
     return 0
 
