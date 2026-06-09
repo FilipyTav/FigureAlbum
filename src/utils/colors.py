@@ -26,6 +26,9 @@ class Colors(Enum):
     # Background
     BG_RED = "\033[41m"
     BG_GREEN = "\033[42m"
+    BG_LIGHT_GRAY = "\033[47m"
+    BG_BLUE = "\033[104m"
+    BG_GOLD = "\033[103m"
 
     def __str__(self) -> str:
         return self.value

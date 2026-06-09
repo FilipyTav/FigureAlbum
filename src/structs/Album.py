@@ -168,27 +168,21 @@ class FigurineAlbum:
 
         return False
 
-    def has_song(self, title: str, artist: str) -> bool:
-        t: str = clean_string(title)
-        a: str = clean_string(artist)
-        sl: set[str] | None = self.__registered.get(a)
-        return t in sl if sl else False
-
     def __str__(self) -> str:
         return f"FigurineAlbum(Size: {self.__count}, Head: {self.__head.data.name if self.__head else 'None'})"  # type: ignore
 
     def display_for_admin(self) -> None:
-        """Prints a formatted tabular view of the queue for administrators."""
+        """Prints a formatted tabular view of the figurines for administrators."""
         print(SEPARATOR)
-        print("Figurine Queue (ADMIN VIEW)\n")
+        print("Figurine Album (ADMIN VIEW)\n")
         if self.__head is None:
-            print("Queue is currently EMPTY.")
+            print("Album is currently EMPTY.")
             print(SEPARATOR)
             return
 
         # Headers
         print(
-            f"{'Position in Queue':<19} | {'ID':<6} | {'Name':<20} | {'Country':<15} | {'Field Position':<20} | {'Rarity':<12}"
+            f"{'Position in Album':<19} | {'ID':<6} | {'Name':<20} | {'Country':<15} | {'Field Position':<20} | {'Rarity':<12}"
         )
         print("-" * 103)
 
@@ -198,19 +192,7 @@ class FigurineAlbum:
         while current is not None:
             if current.data is not None:
                 fig: Figurine = current.data
-
-                pos_str: str = fig.position.full_name if fig.position else "N/A"
-                rarity_str: str = fig.rarity.display_name if fig.rarity else "N/A"
-
-                # Print the row with clean alignment
-                print(
-                    f"#{position_counter:<18} | "
-                    f"{fig.id:<6} | "
-                    f"{truncate_string(fig.name, 20):<20} | "
-                    f"{fig.country:<15} | "
-                    f"{pos_str:<20} | "
-                    f"{fig.rarity.color}{rarity_str:<12}{Colors.RESET}"
-                )
+                fig.display_for_admin()
             else:
                 print(
                     f"#{position_counter:<18} | [ERROR: Corrupted Node - Missing Data]"
@@ -219,7 +201,7 @@ class FigurineAlbum:
             current = current.next
             position_counter += 1
 
-        print(f"\nTotal in Queue: {position_counter - 1}n")
+        print(f"\nTotal in Album: {position_counter - 1}")
         print(SEPARATOR)
 
     def display_cards(self) -> None:

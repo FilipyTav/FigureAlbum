@@ -80,19 +80,7 @@ class FigurineQueue:
         while current is not None:
             if current.data is not None:
                 fig: Figurine = current.data
-
-                pos_str: str = fig.position.full_name if fig.position else "N/A"
-                rarity_str: str = fig.rarity.display_name if fig.rarity else "N/A"
-
-                # Print the row with clean alignment
-                print(
-                    f"#{position_counter:<18} | "
-                    f"{fig.id:<6} | "
-                    f"{truncate_string(fig.name, 20):<20} | "
-                    f"{fig.country:<15} | "
-                    f"{pos_str:<20} | "
-                    f"{fig.rarity.color}{rarity_str:<12}{Colors.RESET}"
-                )
+                fig.display_for_admin()
             else:
                 print(
                     f"#{position_counter:<18} | [ERROR: Corrupted Node - Missing Data]"
@@ -101,10 +89,10 @@ class FigurineQueue:
             current = current.next
             position_counter += 1
 
-        print(f"\nTotal in Queue: {position_counter - 1}n")
+        print(f"\nTotal in Queue: {position_counter - 1}")
         print(SEPARATOR)
 
-    def display_for_user(self) -> None:
+    def display_cards(self) -> None:
         """Display all figurines."""
         print(SEPARATOR)
         print(f"{Colors.BOLD}FIGURINE COLLECTION QUEUE{Colors.RESET}\n")

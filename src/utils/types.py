@@ -15,18 +15,25 @@ class Screen(Enum):
 
 
 class FigurineRarity(Enum):
-    # Format: (Display Name, Color Enum Code, Drop Weight)
     # COMMON = ("Common", "#9d9d9d", 70.0)
     # RARE = ("Rare", "#0070dd", 25.0)
     # LEGENDARY = ("Legendary", "#ff8000", 5.0)
 
-    COMMON = ("Common", Colors.LIGHT_GRAY, 70.0)
-    RARE = ("Rare", Colors.BLUE, 25.0)
-    LEGENDARY = ("Legendary", Colors.GOLD, 5.0)
+    # COMMON = ("Common", Colors.LIGHT_GRAY, 70.0)
+    # RARE = ("Rare", Colors.BLUE, 25.0)
+    # LEGENDARY = ("Legendary", Colors.GOLD, 5.0)
 
-    def __init__(self, display_name: str, color: Colors, weight: float):
+    # Format: (Display Name, Color Enum Code, Color BG code, Drop Weight)
+    COMMON = ("Common", Colors.LIGHT_GRAY, Colors.BG_LIGHT_GRAY, 70.0)
+    RARE = ("Rare", Colors.BLUE, Colors.BG_BLUE, 25.0)
+    LEGENDARY = ("Legendary", Colors.GOLD, Colors.BG_GOLD, 5.0)
+
+    def __init__(
+        self, display_name: str, fgcolor: Colors, bgcolor: Colors, weight: float
+    ):
         self._display_name: str = display_name
-        self._color: Colors = color
+        self._fgcolor: Colors = fgcolor
+        self._bgcolor: Colors = bgcolor
         self._weight: float = weight
 
     @property
@@ -34,8 +41,12 @@ class FigurineRarity(Enum):
         return self._display_name
 
     @property
-    def color(self) -> Colors:
-        return self._color
+    def fgcolor(self) -> Colors:
+        return self._fgcolor
+
+    @property
+    def bgcolor(self) -> Colors:
+        return self._bgcolor
 
     @property
     def weight(self) -> float:
