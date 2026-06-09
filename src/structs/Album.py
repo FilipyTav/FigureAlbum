@@ -19,12 +19,17 @@ class FigurineAlbum:
         self.__count: int = 0
 
         # Avoids repetition
-        self.__registered: dict[str, set[str]] = {}
+        # ID: amount
+        self.__registered: dict[int, int] = {}
 
     def insert_at(self, pos: int, data: Figurine) -> bool:
         """Insert at pos"""
         if pos < 0 or pos > self.__count:
             print(f"Index out of range: {pos}, the list has {self.__count} element(s)")
+            return False
+
+        if data.id in self.__registered:
+            self.__registered[data.id] += 1
             return False
 
         new_node: SFigurineNode = SFigurineNode(data)
@@ -58,6 +63,7 @@ class FigurineAlbum:
             new_node.next = current.next
             current.next = new_node
 
+        self.__registered[data.id] = 1
         self.__count += 1
         return True
 
@@ -180,8 +186,8 @@ class FigurineAlbum:
 
         return False
 
-    def get_pct_completion(self) -> float:
-        return self.len() / TOTAL_FIGURINES
+    def get_pct_completion(self, total: int = TOTAL_FIGURINES) -> float:
+        return (self.len() / total) * 100
 
     def __str__(self) -> str:
         return f"FigurineAlbum(Size: {self.__count}, Head: {self.__head.data.name if self.__head else 'None'})"  # type: ignore
@@ -246,3 +252,22 @@ class FigurineAlbum:
 
     def get_statistics(self) -> None:
         pass
+
+    def remove_one_copy(self, id: int) -> bool:
+        if id not in self.__registered:
+            return False
+
+        if self.__registered[id] > 1:
+            self.__registered[id] -= 1
+            return True
+        else:
+            del self.__registered[id]
+            return self.remove_by_id(id)
+
+    def remove_all_copies(self, id: int) -> bool:
+        if id not in self.__registered:
+            return False
+
+        del self.__registered[id]
+
+        return self.remove_by_id(id)
