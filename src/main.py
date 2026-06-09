@@ -28,8 +28,8 @@ def main() -> int:
     print(album.find_by_name("testc"))
     [print(f) for f in album.find_by_country("BRA")]
 
-    album.display_for_admin()
-    album.display_cards()
+    history.display_for_admin()
+    history.display_cards()
 
     return 0
 

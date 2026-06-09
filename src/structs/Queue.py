@@ -80,7 +80,7 @@ class FigurineQueue:
         while current is not None:
             if current.data is not None:
                 fig: Figurine = current.data
-                fig.display_for_admin()
+                fig.display_for_admin(position_counter)
             else:
                 print(
                     f"#{position_counter:<18} | [ERROR: Corrupted Node - Missing Data]"

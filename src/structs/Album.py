@@ -197,7 +197,7 @@ class FigurineAlbum:
 
         # Headers
         print(
-            f"{'Position in Album':<19} | {'ID':<6} | {'Name':<20} | {'Country':<15} | {'Field Position':<20} | {'Rarity':<12}"
+            f"{'ID':<6} | {'Name':<20} | {'Country':<15} | {'Field Position':<20} | {'Rarity':<12}"
         )
         print("-" * 103)
 

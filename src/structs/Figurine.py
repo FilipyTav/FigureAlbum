@@ -84,13 +84,14 @@ class Figurine:
         print("└" + "─" * (SEPARATOR_WIDTH - 2) + "┘\n")
 
     def display_for_admin(
-        self, position_counter: int = 1, content_width: int = SEPARATOR_WIDTH - 4
+        self, position_counter: int = -1, content_width: int = SEPARATOR_WIDTH - 4
     ) -> None:
         pos_str: str = self.position.full_name if self.position else "N/A"
         rarity_str: str = self.rarity.display_name if self.rarity else "N/A"
+        pos: str = f"#{position_counter:<18} | " if position_counter > 0 else ""
 
         print(
-            f"#{position_counter:<18} | "
+            f"{pos}"
             f"{self.id:<6} | "
             f"{truncate_string(self.name, 20):<20} | "
             f"{self.country:<15} | "
