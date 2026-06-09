@@ -1,12 +1,15 @@
 from __future__ import annotations
+import csv
+import pathlib
 
 from structs.Figurine import Figurine, SFigurineNode
 from structs.Queue import FigurineQueue
 from utils.colors import Colors
-from utils.config import TOTAL_FIGURINES
+from utils.config import DATA_DIR, TOTAL_FIGURINES
 from utils.strings import (
     SEPARATOR,
     clean_string,
+    format_error,
 )
 
 
@@ -333,3 +336,41 @@ class FigurineAlbum:
         history.enqueue(take_fig)
 
         return True
+
+    def save_to_csv(self, filepath: pathlib.Path = DATA_DIR / "data.csv") -> None:
+        try:
+            with open(filepath, mode="w", newline="", encoding="utf-8") as file:
+                writer = csv.writer(file)
+
+                writer.writerow(
+                    ["id", "name", "country", "position", "rarity", "quantity"]
+                )
+
+                current = self.__head
+                while current is not None:
+                    fig = current.data
+                    assert fig
+
+                    quantity: int = self.__registered.get(fig.id, 1)
+
+                    writer.writerow(
+                        [
+                            fig.id,
+                            fig.name,
+                            fig.country,
+                            fig.position.name,
+                            fig.rarity.name,
+                            quantity,
+                        ]
+                    )
+
+                    current = current.next
+
+            print(
+                f" {Colors.LIGHT_GREEN}{Colors.RESET} Album successfully saved to '{Colors.UNDERLINE}{filepath}{Colors.RESET}'."
+            )
+        except IOError as e:
+            print(format_error(f"Could not save album data to {filepath}. ({e})"))
+
+    def __iter__(self):
+        return iter([self.__head, self.__tail, self.__count, self.__registered])

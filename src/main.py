@@ -1,6 +1,7 @@
 from structs.Album import FigurineAlbum
 from structs.Figurine import Figurine
 from structs.Queue import FigurineQueue
+from utils.config import DATA_DIR
 from utils.figurine_examples import FigurineExamples
 from utils.types import FigurineRarity, FootballPosition
 
@@ -26,34 +27,37 @@ def main() -> int:
     # print(album.find_by_id(1))
     # print(album.find_by_name("testc"))
     # [print(f) for f in album.find_by_country("BRA")]
+    #
+    # album.display_for_admin()
+    # [print(r) for r in album.get_repeated()]
+    #
+    # print()
+    # album2.display_for_admin()
+    # [print(r) for r in album2.get_repeated()]
+    # print()
+    #
+    # print(album.is_repeated(1))
+    # print(album2.is_repeated(5))
+    # print(
+    #     album.propose_exchange(
+    #         album2, give_fig=examples.get(1), take_fig=examples.get(5), history=history
+    #     )
+    # )
+    #
+    # album.display_for_admin()
+    # [print(r) for r in album.get_repeated()]
+    #
+    # print()
+    # album2.display_for_admin()
+    # [print(r) for r in album2.get_repeated()]
+    # print()
+    #
+    # history.display_for_admin()
+    # a = history.get_history()
+    # print(a)
 
-    album.display_for_admin()
-    [print(r) for r in album.get_repeated()]
-
-    print()
-    album2.display_for_admin()
-    [print(r) for r in album2.get_repeated()]
-    print()
-
-    print(album.is_repeated(1))
-    print(album2.is_repeated(5))
-    print(
-        album.propose_exchange(
-            album2, give_fig=examples.get(1), take_fig=examples.get(5), history=history
-        )
-    )
-
-    album.display_for_admin()
-    [print(r) for r in album.get_repeated()]
-
-    print()
-    album2.display_for_admin()
-    [print(r) for r in album2.get_repeated()]
-    print()
-
-    history.display_for_admin()
-    a = history.get_history()
-    print(a)
+    album.save_to_csv(DATA_DIR / "album1.csv")
+    album2.save_to_csv(DATA_DIR / "album2.csv")
 
     return 0
 
