@@ -69,6 +69,7 @@ def alb_add_fig(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
     id: int = int(id_str)
 
     album.append(fig_pool.get(id))
+    print(f"\n{Colors.UNDERLINE}Figurinha #{id} adicionada com sucesso!{Colors.RESET}")
 
     print()
     print_section_end_full()
