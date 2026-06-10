@@ -195,27 +195,44 @@ def alb_find_fig(album: FigurineAlbum) -> Screen:
                 error_msg = f"Não foi possível encontrar figurinha (ID:{id}) no álbum."
 
         case "2":
-            name: str | None = get_and_validate_input(
+            country: str | None = get_and_validate_input(
                 f"Busca por {Colors.BOLD}Nome{Colors.RESET}",
                 None,
                 "Nome não pode estar vazio!",
                 cancel_key="B",
             )
 
-            if not name:
+            if not country:
                 return Screen.BACK
 
-            fig: Figurine | None = album.find_by_name(name)
+            fig: Figurine | None = album.find_by_name(country)
 
             if fig:
                 print_section_end_full()
                 print()
                 fig.display_as_card()
             else:
-                error_msg = f"Não foi possível encontrar '{name}' no álbum."
+                error_msg = f"Não foi possível encontrar '{country}' no álbum."
 
         case "3":
-            pass
+            country: str | None = get_and_validate_input(
+                f"Busca por {Colors.BOLD}Seleção{Colors.RESET}",
+                None,
+                "Seleção não pode estar vazia!",
+                cancel_key="B",
+            )
+
+            if not country:
+                return Screen.BACK
+
+            figs: list[Figurine] = album.find_by_country(country)
+
+            if len(figs):
+                print_section_end_full()
+                print()
+                [f.display_as_card() for f in figs]
+            else:
+                error_msg = f"Não foi possível encontrar seleção '{country}' no álbum."
 
         case _:
             print(format_error(error_msg))
