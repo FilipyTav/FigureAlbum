@@ -339,9 +339,6 @@ class FigurineAlbum:
         return True
 
     def save_csv(self, filepath: pathlib.Path = DATA_DIR / "data.csv") -> bool:
-        if not filepath.exists():
-            return False
-
         try:
             with open(filepath, mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.writer(file)
@@ -352,7 +349,7 @@ class FigurineAlbum:
 
                 current = self.__head
                 while current is not None:
-                    fig = current.data
+                    fig: Figurine | None = current.data
                     assert fig
 
                     quantity: int = self.__registered.get(fig.id, 1)

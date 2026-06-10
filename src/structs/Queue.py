@@ -1,9 +1,14 @@
+import csv
+import pathlib
 from structs.Figurine import Figurine, SFigurineNode
 from utils.colors import Colors
+from utils.config import DATA_DIR
+from utils.figurine_examples import FigurineExamples
 from utils.strings import (
     SEPARATOR,
     SEPARATOR_WIDTH,
     centered_msg,
+    format_error,
     print_centered_header,
     print_section_name,
     print_section_name_full,
@@ -146,3 +151,60 @@ class FigurineQueue:
                 current = current.next
 
         return history_list
+
+    def save_csv(self, filepath: pathlib.Path = DATA_DIR / "data.csv") -> bool:
+        try:
+            with open(filepath, mode="w", newline="", encoding="utf-8") as file:
+                writer = csv.writer(file)
+
+                writer.writerow(["id", "name", "country", "position", "rarity"])
+
+                current = self.__head
+                while current is not None:
+                    fig: Figurine | None = current.data
+                    assert fig
+
+                    writer.writerow(
+                        [
+                            fig.id,
+                            fig.name,
+                            fig.country,
+                            fig.position.name,
+                            fig.rarity.name,
+                        ]
+                    )
+
+                    current = current.next
+
+            print(
+                f" {Colors.LIGHT_GREEN}{Colors.RESET} History successfully saved to '{Colors.UNDERLINE}{filepath}{Colors.RESET}'."
+            )
+        except IOError as e:
+            print(format_error(f"Could not save album data to {filepath}. ({e})"))
+            return False
+
+        return True
+
+    def load_csv(self, filepath: pathlib.Path, examples: FigurineExamples) -> bool:
+        if not filepath.exists():
+            return False
+
+        try:
+            with open(filepath, mode="r", newline="", encoding="utf-8") as file:
+                reader = csv.reader(file)
+                next(reader)
+                for row in reader:
+                    id, name, country, position, rarity = row
+                    fig: Figurine | None = examples.get(int(id))
+                    if fig:
+                        self.enqueue(fig)
+
+        except IOError as e:
+            print(format_error(f"Could not load history data from {filepath}. ({e})"))
+            return False
+
+        except ValueError:
+            print(format_error(f"Malformatted row data in file {filepath}."))
+            return False
+
+        return True

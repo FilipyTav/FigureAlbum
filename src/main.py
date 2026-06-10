@@ -14,6 +14,11 @@ def main() -> int:
     album: FigurineAlbum = FigurineAlbum()
     album2: FigurineAlbum = FigurineAlbum()
 
+    # history.enqueue(examples.get(0))
+    # history.enqueue(examples.get(2))
+    # history.enqueue(examples.get(4))
+    # history.enqueue(examples.get(0))
+
     # album.append(examples.get(0))
     # album.append(examples.get(1))
     # album.prepend(examples.get(2))
@@ -55,13 +60,17 @@ def main() -> int:
     album.load_csv(DATA_DIR / "album1.csv", examples)
     album2.load_csv(DATA_DIR / "album2.csv", examples)
 
-    album.display_for_admin()
-    [print(r) for r in album.get_repeated()]
+    history.load_csv(DATA_DIR / "history.csv", examples)
+    history.display_for_admin()
+    [print(t) for t in history.get_history()]
 
-    print()
-    album2.display_for_admin()
-    [print(r) for r in album2.get_repeated()]
-    print()
+    # album.display_for_admin()
+    # [print(r) for r in album.get_repeated()]
+    #
+    # print()
+    # album2.display_for_admin()
+    # [print(r) for r in album2.get_repeated()]
+    # print()
 
     return 0
 
