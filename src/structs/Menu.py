@@ -10,12 +10,12 @@ from ui.screen_manager import (
     alb_rm_fig,
     gen_load_data,
     gen_save_data,
+    hist_display,
     main_menu,
     screen_clear,
     todo_screen,
 )
 from ui.state import AppState
-from utils.strings import format_error
 from utils.types import Screen, ScreenConfig
 
 
@@ -78,6 +78,12 @@ class MenuManager:
                 lambda: alb_propose_exchange(
                     self.state.user_album, self.state.rival_album, self.state.history
                 ),
+                Screen.MAIN,
+            ),
+            ScreenConfig(
+                Screen.HIST_DISPLAY_TRANSACTIONS,
+                "Histórico de transações",
+                lambda: hist_display(),
                 Screen.MAIN,
             ),
             ScreenConfig(

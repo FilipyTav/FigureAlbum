@@ -527,6 +527,14 @@ def gen_load_data(
         return nav
     return Screen.STAY
 
+def hist_display() -> Screen:
+    print_section_name_full("Histórico de transações")
+
+    nav, _ = get_nav_input()
+    if nav:
+        return nav
+    return Screen.STAY
+
 
 def todo_screen() -> Screen:
     print_section_name_full("TODO")
