@@ -65,12 +65,16 @@ def centered_msg(
     return f"{color}{Colors.BOLD}{f'{msg}':^{width}}{Colors.RESET}"
 
 
-def centered_msg_full(msg: str, color: Colors = Colors.YELLOW) -> str:
+def centered_msg_full(
+    msg: str, color: Colors = Colors.YELLOW, bold: bool = True
+) -> str:
     try:
         term_width = os.get_terminal_size().columns
     except OSError:
         term_width = 80
-    return f"{color}{Colors.BOLD}{f'{msg}':^{term_width}}{Colors.RESET}"
+    return (
+        f"{color}{Colors.BOLD.value if bold else ''}{msg:^{term_width}}{Colors.RESET}"
+    )
 
 
 def truncate_string(text: str, max_width: int, suffix: str = "...") -> str:

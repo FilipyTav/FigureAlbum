@@ -8,6 +8,7 @@ from utils.config import TOTAL_FIGURINES
 from utils.figurine_examples import FigurineExamples
 from utils.strings import (
     SEPARATOR,
+    SUB_SEPARATOR,
     centered_msg,
     centered_msg_full,
     format_error,
@@ -527,8 +528,43 @@ def gen_load_data(
         return nav
     return Screen.STAY
 
-def hist_display() -> Screen:
+def hist_display(history: FigurineQueue) -> Screen:
     print_section_name_full("Histórico de transações")
+    print()
+
+    c = Colors
+    history_records = history.get_history()
+
+    try:
+        term_width = os.get_terminal_size().columns
+    except OSError:
+        term_width = 80
+
+    padding: int = max(0, (term_width - 56) // 2)
+    p_space: str = " " * padding
+
+    print_section_end_full(True, Colors.WHITE)
+
+    if not history_records:
+        print(centered_msg_full("Nenhuma troca foi realizada ainda.", c.DARK_GRAY, bold=False))
+    else:
+        print(f"{p_space}{c.BOLD}{c.DARK_GRAY}{'SAIU (Deixou a coleção)':<23}     {'ENTROU (Nova na coleção)'}{c.RESET}")
+        print_section_end_full(True, Colors.WHITE)
+
+        for _, (fig_out, fig_in) in enumerate(history_records, 1):
+            cor_out = getattr(c, fig_out.rarity.name, c.WHITE)
+            cor_in = getattr(c, fig_in.rarity.name, c.WHITE)
+            
+            print(
+                f"{p_space}{c.RED}-{c.RESET} {cor_out}{fig_out.name:<21}{c.RESET} "
+                f"{c.DARK_GRAY}--->{c.RESET} "
+                f"{c.GREEN}+{c.RESET} {cor_in}{fig_in.name}{c.RESET}"
+            )
+
+    print_section_end_full(True, Colors.WHITE)
+
+    print()
+    print_section_end_full()
 
     nav, _ = get_nav_input()
     if nav:

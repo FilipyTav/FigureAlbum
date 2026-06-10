@@ -83,7 +83,7 @@ class MenuManager:
             ScreenConfig(
                 Screen.HIST_DISPLAY_TRANSACTIONS,
                 "Histórico de transações",
-                lambda: hist_display(),
+                lambda: hist_display(self.state.history),
                 Screen.MAIN,
             ),
             ScreenConfig(
