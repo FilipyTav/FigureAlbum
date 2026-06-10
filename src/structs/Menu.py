@@ -8,6 +8,7 @@ from ui.screen_manager import (
     alb_find_fig,
     alb_propose_exchange,
     alb_rm_fig,
+    gen_save_data,
     main_menu,
     screen_clear,
     todo_screen,
@@ -78,8 +79,15 @@ class MenuManager:
                 ),
                 Screen.MAIN,
             ),
+            ScreenConfig(
+                Screen.SAVE_DATA,
+                "Salvar dados",
+                lambda: gen_save_data(
+                    self.state.user_album, self.state.rival_album, self.state.history
+                ),
+                Screen.MAIN,
+            ),
             # fmt: off
-            ScreenConfig(Screen.SAVE_DATA, "Salvar dados", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.LOAD_DATA, "Carregar dados", todo_screen, Screen.MAIN),
             # ------------
             # Placeholder

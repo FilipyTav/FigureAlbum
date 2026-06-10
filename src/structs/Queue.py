@@ -152,7 +152,10 @@ class FigurineQueue:
 
         return history_list
 
-    def save_csv(self, filepath: pathlib.Path = DATA_DIR / "data.csv") -> bool:
+    def save_csv(self, filepath: pathlib.Path | str = DATA_DIR / "data.csv") -> bool:
+        if isinstance(filepath, str):
+            filepath = pathlib.Path(filepath)
+
         try:
             with open(filepath, mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.writer(file)

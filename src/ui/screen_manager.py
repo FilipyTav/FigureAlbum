@@ -465,6 +465,38 @@ def alb_propose_exchange(
     return Screen.BACK
 
 
+def gen_save_data(
+    album1: FigurineAlbum, album2: FigurineAlbum, history: FigurineQueue
+) -> Screen:
+    print_section_name_full("Salvar dados")
+
+    confirm: str | None = get_and_validate_input(
+        prompt="Deseja salvar todos os dados em CSV? (S/N)",
+        validator=lambda v: v.upper() in ["S", "N"],
+        error_msg="Entrada invalida. Digite S para Sim ou N para Não.",
+        cancel_key="B",
+    )
+
+    if confirm is None or confirm.upper() == "N":
+        return Screen.BACK
+
+    all_ok: bool = True
+
+    all_ok = album1.save_csv("album1.csv")
+    all_ok = album2.save_csv("album2.csv")
+    all_ok = history.save_csv("history.csv")
+
+    if all_ok:
+        print("Dados salvos com sucesso!\n")
+
+    print_section_end_full()
+
+    nav, _ = get_nav_input()
+    if nav:
+        return nav
+    return Screen.STAY
+
+
 def todo_screen() -> Screen:
     print_section_name_full("TODO")
     print(centered_msg_full("Screen yet to be implemented"))
