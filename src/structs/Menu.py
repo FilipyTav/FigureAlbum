@@ -6,6 +6,7 @@ from ui.screen_manager import (
     alb_display_repeated,
     alb_display_stats,
     alb_find_fig,
+    alb_propose_exchange,
     alb_rm_fig,
     main_menu,
     screen_clear,
@@ -69,8 +70,15 @@ class MenuManager:
                 lambda: alb_display_repeated(self.state.user_album),
                 Screen.MAIN,
             ),
+            ScreenConfig(
+                Screen.ALBUM_EXCHANGE,
+                "Fazer troca",
+                lambda: alb_propose_exchange(
+                    self.state.user_album, self.state.rival_album
+                ),
+                Screen.MAIN,
+            ),
             # fmt: off
-            ScreenConfig(Screen.ALBUM_EXCHANGE, "Fazer troca", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.SAVE_DATA, "Salvar dados", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.LOAD_DATA, "Carregar dados", todo_screen, Screen.MAIN),
             # ------------

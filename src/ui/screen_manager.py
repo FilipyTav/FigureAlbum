@@ -3,6 +3,7 @@ import os
 from structs.Album import FigurineAlbum
 from structs.Figurine import Figurine
 from utils.colors import Colors
+from utils.config import TOTAL_FIGURINES
 from utils.figurine_examples import FigurineExamples
 from utils.strings import (
     centered_msg,
@@ -14,7 +15,12 @@ from utils.strings import (
     print_section_name_full,
 )
 from utils.types import Screen, ScreenConfig
-from utils.input import create_range_validator, get_and_validate_input, get_nav_input
+from utils.input import (
+    create_range_validator,
+    get_and_validate_input,
+    get_nav_input,
+    validate_exchange_format,
+)
 
 
 def screen_clear():
@@ -313,27 +319,32 @@ def alb_display_stats(album: FigurineAlbum, fig_pool: FigurineExamples) -> Scree
         return nav
     return Screen.STAY
 
+
 def alb_display_repeated(album: FigurineAlbum) -> Screen:
     print_section_name_full("REPETIDAS")
 
     c = Colors
-    
+
     repeated_cards: list[Figurine] = album.get_repeated()
-    
+
     if not repeated_cards:
         print(f"  {c.LIGHT_GRAY}Você não possui nenhuma figurinha repetida.{c.RESET}")
         print(f"  {c.LIGHT_GRAY}Seu álbum esta livre de repetições!{c.RESET}")
     else:
-        print(f"{c.BOLD}{c.DARK_GRAY}  {'ID':<4} {'Nome':<22} {'Raridade':<12} {'Quantidade'}{c.RESET}")
-        print(f"{c.DARK_GRAY}  ------------------------------------------------{c.RESET}")
-        
+        print(
+            f"{c.BOLD}{c.DARK_GRAY}  {'ID':<4} {'Nome':<22} {'Raridade':<12} {'Quantidade'}{c.RESET}"
+        )
+        print(
+            f"{c.DARK_GRAY}  ------------------------------------------------{c.RESET}"
+        )
+
         registry = album.get_registry()
-        
+
         for fig in repeated_cards:
             rarity_color = getattr(c, fig.rarity.name, c.WHITE)
-            
+
             dup_qty = registry.get(fig.id, 1) - 1
-            
+
             print(
                 f"  {c.DARK_GRAY}{fig.id:02d}{c.RESET}  "
                 f"{rarity_color}{fig.name:<22}{c.RESET} "
@@ -349,9 +360,80 @@ def alb_display_repeated(album: FigurineAlbum) -> Screen:
     return Screen.STAY
 
 
+def alb_propose_exchange(album1: FigurineAlbum, album2: FigurineAlbum) -> Screen:
+    print_section_name_full("Propor troca")
+    print(centered_msg_full("Troque!"))
+    print_section_end_full()
+
+    c = Colors
+
+    figs1: list[Figurine] = album1.get_figurines()
+    figs2: list[Figurine] = album2.get_figurines()
+
+    print(f"\n{c.BOLD}Suas Figurinhas:{c.RESET}")
+    print(f"{c.DARK_GRAY}  ------------------------------------------------{c.RESET}")
+    for fig in figs1:
+        cor_raridade = getattr(c, fig.rarity.name, c.WHITE)
+        print(f"  [{cor_raridade}{fig.id:02d}{c.RESET}] {fig.name:<22}")
+
+    print(f"\n{c.BOLD}Figurinhas do oponente:{c.RESET}")
+    print(f"{c.DARK_GRAY}  ------------------------------------------------{c.RESET}")
+    for fig in figs2:
+        cor_raridade = getattr(c, fig.rarity.name, c.WHITE)
+        print(f"  [{cor_raridade}{fig.id:02d}{c.RESET}] {fig.name:<22}")
+
+    print_section_end_full()
+
+    transaction_ok: bool = True
+    id_min = 0
+    id_max = TOTAL_FIGURINES
+
+    error_msg: str = (
+        f"Formato inválido! Digite dois IDs separados por virgula entre {id_min} e {id_max}."
+    )
+    raw_input: str | None = get_and_validate_input(
+        prompt="Digite os ids para a troca, no formato (seu_id,id_rival)",
+        validator=lambda v: validate_exchange_format(v, id_min, id_max),
+        error_msg=error_msg,
+        cancel_key="B",
+    )
+
+    if raw_input is None:
+        print(f"\n{c.YELLOW}Troca cancelada.{c.RESET}")
+        return Screen.STAY
+
+    parts: list[str] = raw_input.split(",")
+    give_id: int = int(parts[0].strip())
+    take_id: int = int(int(parts[1].strip()))
+    give_fig: Figurine | None = album1.find_by_id(give_id)
+    take_fig: Figurine | None = album2.find_by_id(take_id)
+
+    if give_fig is None:
+        print(format_error(f"Você não possui a figurinha com ID: {give_id}"))
+        transaction_ok = False
+
+    if take_fig is None:
+        print(format_error(f"Oponente não possui a figurinha com ID: {take_id}"))
+        transaction_ok = False
+
+    if not transaction_ok:
+        print(format_error(f"Transação não concluída"))
+
+    print("\n[A] Remover outra")
+    nav, choice = get_nav_input(False)
+    if nav:
+        return nav
+
+    match choice:
+        case "a":
+            return Screen.STAY
+
+    return Screen.BACK
+
+
 def todo_screen() -> Screen:
     print_section_name_full("TODO")
-    print("Screen yet to be implemented")
+    print(centered_msg_full("Screen yet to be implemented"))
     print_section_end_full()
 
     nav, _ = get_nav_input()

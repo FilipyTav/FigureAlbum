@@ -21,6 +21,11 @@ def main() -> int:
     album.prepend(examples.get(2))
     album.append(examples.get(1))
 
+    album2.append(examples.get(3))
+    album2.append(examples.get(5))
+    album2.prepend(examples.get(5))
+    album2.append(examples.get(7))
+
     menu: MenuManager = MenuManager(AppState(album, album2, history, examples))
     menu.run()
 
@@ -28,12 +33,6 @@ def main() -> int:
     # history.enqueue(examples.get(2))
     # history.enqueue(examples.get(4))
     # history.enqueue(examples.get(0))
-
-    #
-    # album2.append(examples.get(3))
-    # album2.append(examples.get(5))
-    # album2.prepend(examples.get(5))
-    # album2.append(examples.get(7))
 
     return 0
 

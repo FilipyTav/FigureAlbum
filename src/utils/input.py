@@ -65,3 +65,16 @@ def create_range_validator(min_val: int, max_val: int):
             return False
 
     return validator
+
+def validate_exchange_format(value: str, id_min: int, id_max: int) -> bool:
+    try:
+        parts: list[str] = value.split(",")
+        if len(parts) != 2:
+            return False
+        
+        my_id: int = int(parts[0].strip())
+        rival_id: int = int(parts[1].strip())
+        
+        return (id_min <= my_id <= id_max) and (id_min <= rival_id <= id_max)
+    except ValueError:
+        return False
