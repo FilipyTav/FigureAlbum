@@ -33,23 +33,30 @@ def print_section_end(sub: bool = False, color: Colors = Colors.MAGENTA) -> None
 def print_section_name_full(
     name: str, sub: bool = False, color: Colors = Colors.MAGENTA
 ) -> None:
-    # 1. Get the current, real-time terminal width (fallback to 80 if running inside an IDE console)
     try:
         term_width = os.get_terminal_size().columns
     except OSError:
         term_width = 80
 
-    # 2. Determine your separator character based on the 'sub' flag
-    # (Assuming SEPARATOR and SUB_SEPARATOR are strings like "=" and "-")
-    char = "=" if not sub else "-"
+    char: str = "=" if not sub else "-"
 
-    # 3. Create the full-width separator line
-    sep_line = char * term_width
+    sep_line: str = char * term_width
 
-    # 4. Print it out using your exact string centering format modifier `^`
-    print(f"\n{color}{Colors.BOLD}{sep_line}")
-    print(f"{name:^{term_width}}")
-    print(f"{sep_line}{Colors.RESET}\n")
+    print_section_end_full(sub, color)
+    print(f"{color}{name:^{term_width}}{Colors.RESET}")
+    print_section_end_full(sub, color)
+
+
+def print_section_end_full(sub: bool = False, color: Colors = Colors.MAGENTA) -> None:
+    try:
+        term_width = os.get_terminal_size().columns
+    except OSError:
+        term_width = 80
+
+    char: str = "=" if not sub else "-"
+
+    sep_line: str = char * term_width
+    print(f"{color}{Colors.BOLD}{sep_line}{Colors.RESET}")
 
 
 def format_error(msg: str) -> str:

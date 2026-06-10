@@ -1,6 +1,8 @@
 from structs.Album import FigurineAlbum
 from structs.Figurine import Figurine
+from structs.Menu import MenuManager
 from structs.Queue import FigurineQueue
+from ui.state import AppState
 from utils.config import DATA_DIR
 from utils.figurine_examples import FigurineExamples
 from utils.types import FigurineRarity, FootballPosition
@@ -13,6 +15,9 @@ def main() -> int:
 
     album: FigurineAlbum = FigurineAlbum()
     album2: FigurineAlbum = FigurineAlbum()
+
+    menu: MenuManager = MenuManager(AppState(album, album2, history))
+    menu.run()
 
     # history.enqueue(examples.get(0))
     # history.enqueue(examples.get(2))
@@ -28,49 +33,6 @@ def main() -> int:
     # album2.append(examples.get(5))
     # album2.prepend(examples.get(5))
     # album2.append(examples.get(7))
-
-    # print(album.find_by_id(1))
-    # print(album.find_by_name("testc"))
-    # [print(f) for f in album.find_by_country("BRA")]
-    #
-    # album.display_for_admin()
-    # [print(r) for r in album.get_repeated()]
-    #
-    # print()
-    # album2.display_for_admin()
-    # [print(r) for r in album2.get_repeated()]
-    # print()
-    #
-    # print(album.is_repeated(1))
-    # print(album2.is_repeated(5))
-    # print(
-    #     album.propose_exchange(
-    #         album2, give_fig=examples.get(1), take_fig=examples.get(5), history=history
-    #     )
-    # )
-    #
-    #
-    # history.display_for_admin()
-    # a = history.get_history()
-    # print(a)
-
-    # album.save_to_csv(DATA_DIR / "album1.csv")
-    # album2.save_to_csv(DATA_DIR / "album2.csv")
-
-    album.load_csv(DATA_DIR / "album1.csv", examples)
-    album2.load_csv(DATA_DIR / "album2.csv", examples)
-
-    history.load_csv(DATA_DIR / "history.csv", examples)
-    history.display_for_admin()
-    [print(t) for t in history.get_history()]
-
-    # album.display_for_admin()
-    # [print(r) for r in album.get_repeated()]
-    #
-    # print()
-    # album2.display_for_admin()
-    # [print(r) for r in album2.get_repeated()]
-    # print()
 
     return 0
 

@@ -1,4 +1,6 @@
 from enum import Enum, auto
+from dataclasses import dataclass
+from typing import Callable
 
 from utils.colors import Colors
 
@@ -12,6 +14,14 @@ class Screen(Enum):
     STAY = auto()
     TODO = auto()
     # ------------------------
+
+
+@dataclass
+class ScreenConfig:
+    id: Screen
+    label: str
+    handler: Callable
+    parent: Screen | None = None
 
 
 class FigurineRarity(Enum):
