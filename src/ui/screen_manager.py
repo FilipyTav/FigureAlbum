@@ -59,9 +59,16 @@ def alb_add_fig(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
 
     print_section_end_full()
 
-    get_and_validate_input(
+    id_str: str | None = get_and_validate_input(
         "ID", create_range_validator(0, fig_pool.len() - 1), cancel_key="B"
     )
+
+    if not id_str or id_str == "b":
+        return Screen.BACK
+
+    id: int = int(id_str)
+
+    album.append(fig_pool.get(id))
 
     return Screen.BACK
 
