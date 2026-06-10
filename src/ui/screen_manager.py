@@ -87,6 +87,24 @@ def alb_add_fig(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
     return Screen.BACK
 
 
+def alb_display(album: FigurineAlbum) -> Screen:
+    screen_clear()
+
+    print_section_name_full("ÁLBUM DE FIGURINHAS")
+    print(centered_msg_full("Suas figuinhas"))
+
+    for f in album.get_figurines():
+        f.display_as_card()
+
+    print("Total: ", album.len())
+    print_section_end_full()
+
+    nav, _ = get_nav_input()
+    if nav:
+        return nav
+    return Screen.STAY
+
+
 def todo_screen() -> Screen:
     print_section_name_full("TODO")
     print("Screen yet to be implemented")

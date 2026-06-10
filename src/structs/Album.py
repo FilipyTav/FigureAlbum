@@ -401,5 +401,14 @@ class FigurineAlbum:
 
         return True
 
+    def get_figurines(self) -> list[Figurine]:
+        figurines: list[Figurine] = []
+        current: SFigurineNode | None = self.__head
+        while current:
+            figurines.append(current.data)  # type: ignore
+            current = current.next
+
+        return figurines
+
     def __iter__(self):
         return iter([self.__head, self.__tail, self.__count, self.__registered])

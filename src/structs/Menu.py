@@ -1,6 +1,12 @@
 from structs.MenuStack import MenuStack
 
-from ui.screen_manager import alb_add_fig, main_menu, screen_clear, todo_screen
+from ui.screen_manager import (
+    alb_add_fig,
+    alb_display,
+    main_menu,
+    screen_clear,
+    todo_screen,
+)
 from ui.state import AppState
 from utils.strings import format_error
 from utils.types import Screen, ScreenConfig
@@ -30,7 +36,7 @@ class MenuManager:
             # fmt: off
             ScreenConfig(Screen.ALBUM_REMOVE, "Remover figuinha", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.ALBUM_FIND, "Consultar figurinha", todo_screen, Screen.MAIN),
-            ScreenConfig(Screen.ALBUM_DISPLAY, "Mostrar Álbum", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.ALBUM_DISPLAY, "Mostrar Álbum", lambda: alb_display(self.state.user_album), Screen.MAIN),
             ScreenConfig(Screen.ALBUM_STATS, "Estatísticas Álbum", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.ALBUM_SHOW_REPEATED, "Mostrar repetidas", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.ALBUM_EXCHANGE, "Fazer troca", todo_screen, Screen.MAIN),
