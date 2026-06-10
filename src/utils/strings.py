@@ -38,10 +38,6 @@ def print_section_name_full(
     except OSError:
         term_width = 80
 
-    char: str = "=" if not sub else "-"
-
-    sep_line: str = char * term_width
-
     print_section_end_full(sub, color)
     print(f"{color}{name:^{term_width}}{Colors.RESET}")
     print_section_end_full(sub, color)
@@ -67,6 +63,14 @@ def centered_msg(
     msg: str, width: int = SEPARATOR_WIDTH, color: Colors = Colors.YELLOW
 ) -> str:
     return f"{color}{Colors.BOLD}{f'{msg}':^{width}}{Colors.RESET}"
+
+
+def centered_msg_full(msg: str, color: Colors = Colors.YELLOW) -> str:
+    try:
+        term_width = os.get_terminal_size().columns
+    except OSError:
+        term_width = 80
+    return f"{color}{Colors.BOLD}{f'{msg}':^{term_width}}{Colors.RESET}"
 
 
 def truncate_string(text: str, max_width: int, suffix: str = "...") -> str:

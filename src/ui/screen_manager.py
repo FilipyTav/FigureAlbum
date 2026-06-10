@@ -1,7 +1,12 @@
 import os
 
+from structs.Album import FigurineAlbum
+from structs.Figurine import Figurine
 from utils.colors import Colors
+from utils.figurine_examples import FigurineExamples
 from utils.strings import (
+    centered_msg,
+    centered_msg_full,
     print_centered_header,
     print_section_end,
     print_section_end_full,
@@ -41,6 +46,24 @@ def main_menu(registry: list[ScreenConfig]) -> Screen:
 
     print(f"{Colors.RED}[!] Opção inválida!{Colors.RESET}")
     return Screen.STAY
+
+
+def alb_add_fig(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
+    screen_clear()
+
+    print_section_name_full("ADICIONAR FIGUINHA")
+    print(centered_msg_full("Escolha"))
+
+    for f in fig_pool:
+        f.display_as_card()
+
+    print_section_end_full()
+
+    nav, _ = get_nav_input()
+    if nav:
+        return nav
+
+    return Screen.TODO
 
 
 def todo_screen() -> Screen:

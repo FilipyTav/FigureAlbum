@@ -29,7 +29,7 @@ class Figurine:
         # Dynamic badge based on position
         if position_counter == 1:
             status_badge = (
-                f"{Colors.BG_GREEN}{Colors.BLACK}{Colors.BOLD} NEXT UP {Colors.RESET}"
+                f"{Colors.BG_GREEN}{Colors.BLACK}{Colors.BOLD} PLAYER {Colors.RESET}"
             )
         else:
             status_badge = (

@@ -1,6 +1,6 @@
 from structs.MenuStack import MenuStack
 
-from ui.screen_manager import main_menu, screen_clear, todo_screen
+from ui.screen_manager import alb_add_fig, main_menu, screen_clear, todo_screen
 from ui.state import AppState
 from utils.strings import format_error
 from utils.types import Screen, ScreenConfig
@@ -21,8 +21,13 @@ class MenuManager:
             # ------------
             # Children of MAIN
             # ------------
+            ScreenConfig(
+                Screen.ALBUM_ADD,
+                "Adicionar figuinha",
+                lambda: alb_add_fig(self.state.user_album, self.state.figurine_pool),
+                Screen.MAIN,
+            ),
             # fmt: off
-            ScreenConfig(Screen.ALBUM_ADD, "Adicionar figuinha", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.ALBUM_REMOVE, "Remover figuinha", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.ALBUM_FIND, "Consultar figurinha", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.ALBUM_DISPLAY, "Mostrar Álbum", todo_screen, Screen.MAIN),

@@ -27,10 +27,13 @@ class FigurineExamples:
         }
 
     def draw_pack(self, pack_size: int = 5) -> list[Figurine]:
-        pool: list[Figurine] = list(self.cards.values())
+        pool: list[Figurine] = list(self)
         weights: list[float] = [card.rarity.weight for card in pool]
 
         return random.choices(pool, weights=weights, k=pack_size)
 
     def get(self, card_id: int) -> Figurine | None:
         return self.cards.get(card_id)
+
+    def __iter__(self):
+        return iter(self.cards.values())
