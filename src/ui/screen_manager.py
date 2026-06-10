@@ -44,7 +44,10 @@ def main_menu(registry: list[ScreenConfig]) -> Screen:
 
 
 def todo_screen() -> Screen:
+    print_section_name_full("TODO")
     print("Screen yet to be implemented")
+    print_section_end_full()
+
     nav, _ = get_nav_input()
     if nav:
         return nav
