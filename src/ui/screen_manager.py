@@ -85,8 +85,6 @@ def alb_add_fig(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
 
     return Screen.BACK
 
-    return Screen.BACK
-
 
 def alb_display(album: FigurineAlbum) -> Screen:
     screen_clear()
@@ -104,6 +102,48 @@ def alb_display(album: FigurineAlbum) -> Screen:
     if nav:
         return nav
     return Screen.STAY
+
+
+def alb_rm_fig(album: FigurineAlbum) -> Screen:
+    screen_clear()
+
+    print_section_name_full("REMOVER FIGURINHAS")
+    print(centered_msg_full("Qual remover?"))
+
+    for f in album.get_figurines():
+        f.display_as_card()
+
+    print("Total: ", album.len())
+
+    print_section_end_full()
+
+    id_str: str | None = get_and_validate_input(
+        "ID", create_range_validator(0, album.len() - 1), cancel_key="B"
+    )
+
+    if not id_str or id_str == "b":
+        return Screen.BACK
+
+    id: int = int(id_str)
+
+    album.remove_all_copies(id)
+    print(
+        f"\n{Colors.UNDERLINE}Figurinha #{id} removida em sua totalidade com sucesso!{Colors.RESET}"
+    )
+
+    print()
+    print_section_end_full()
+
+    print("\n[A] Remover outra")
+    nav, choice = get_nav_input(False)
+    if nav:
+        return nav
+
+    match choice:
+        case "a":
+            return Screen.STAY
+
+    return Screen.BACK
 
 
 def todo_screen() -> Screen:
