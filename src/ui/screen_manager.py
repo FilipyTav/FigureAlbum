@@ -313,6 +313,41 @@ def alb_display_stats(album: FigurineAlbum, fig_pool: FigurineExamples) -> Scree
         return nav
     return Screen.STAY
 
+def alb_display_repeated(album: FigurineAlbum) -> Screen:
+    print_section_name_full("REPETIDAS")
+
+    c = Colors
+    
+    repeated_cards: list[Figurine] = album.get_repeated()
+    
+    if not repeated_cards:
+        print(f"  {c.LIGHT_GRAY}Você não possui nenhuma figurinha repetida.{c.RESET}")
+        print(f"  {c.LIGHT_GRAY}Seu álbum esta livre de repetições!{c.RESET}")
+    else:
+        print(f"{c.BOLD}{c.DARK_GRAY}  {'ID':<4} {'Nome':<22} {'Raridade':<12} {'Quantidade'}{c.RESET}")
+        print(f"{c.DARK_GRAY}  ------------------------------------------------{c.RESET}")
+        
+        registry = album.get_registry()
+        
+        for fig in repeated_cards:
+            rarity_color = getattr(c, fig.rarity.name, c.WHITE)
+            
+            dup_qty = registry.get(fig.id, 1) - 1
+            
+            print(
+                f"  {c.DARK_GRAY}{fig.id:02d}{c.RESET}  "
+                f"{rarity_color}{fig.name:<22}{c.RESET} "
+                f"{rarity_color}{fig.rarity.name:<12}{c.RESET} "
+                f"{c.RED}+{dup_qty} repetidas{c.RESET}"
+            )
+
+    print_section_end_full()
+
+    nav, _ = get_nav_input()
+    if nav:
+        return nav
+    return Screen.STAY
+
 
 def todo_screen() -> Screen:
     print_section_name_full("TODO")

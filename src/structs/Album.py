@@ -325,7 +325,6 @@ class FigurineAlbum:
         return self.remove_by_id(id)
 
     def get_repeated(self) -> list[Figurine]:
-        # TODO: return amount of repeated figurine as well
         repeated_ids: list[int] = []
         for id in self.__registered:
             if self.is_repeated(id):
@@ -339,6 +338,9 @@ class FigurineAlbum:
             if count > 1:
                 total_repeats += count - 1
         return total_repeats
+
+    def get_registry(self) -> dict:
+        return self.__registered
 
     def is_repeated(self, id: int) -> bool:
         return self.__registered.get(id, 0) > 1
