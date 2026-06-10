@@ -35,5 +35,8 @@ class FigurineExamples:
     def get(self, card_id: int) -> Figurine | None:
         return self.cards.get(card_id)
 
+    def len(self) -> int:
+        return len(self.DATA_POOL)
+
     def __iter__(self):
         return iter(self.cards.values())

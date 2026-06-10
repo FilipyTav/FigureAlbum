@@ -13,7 +13,7 @@ from utils.strings import (
     print_section_name_full,
 )
 from utils.types import Screen, ScreenConfig
-from utils.input import get_nav_input
+from utils.input import create_range_validator, get_and_validate_input, get_nav_input
 
 
 def screen_clear():
@@ -59,11 +59,11 @@ def alb_add_fig(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
 
     print_section_end_full()
 
-    nav, _ = get_nav_input()
-    if nav:
-        return nav
+    get_and_validate_input(
+        "ID", create_range_validator(0, fig_pool.len() - 1), cancel_key="B"
+    )
 
-    return Screen.TODO
+    return Screen.BACK
 
 
 def todo_screen() -> Screen:

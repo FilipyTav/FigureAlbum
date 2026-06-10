@@ -46,8 +46,22 @@ def get_nav_input(has_nls: bool = True) -> tuple[Screen | None, str]:
     return nav, choice
 
 
-def validate_id(v: str) -> bool:
+def validate_positive_int(value: str) -> bool:
     try:
-        return int(v) >= 0
+        num: int = int(value)
+        return num >= 0
     except ValueError:
         return False
+
+
+def create_range_validator(min_val: int, max_val: int):
+    """[min, max] range (inclusive)."""
+
+    def validator(value: str) -> bool:
+        try:
+            num: int = int(value)
+            return min_val <= num <= max_val
+        except ValueError:
+            return False
+
+    return validator
