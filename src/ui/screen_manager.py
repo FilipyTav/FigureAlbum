@@ -496,6 +496,37 @@ def gen_save_data(
         return nav
     return Screen.STAY
 
+def gen_load_data(
+        album1: FigurineAlbum, album2: FigurineAlbum, history: FigurineQueue, fig_pool: FigurineExamples
+) -> Screen:
+    print_section_name_full("Carregar dados")
+
+    confirm: str | None = get_and_validate_input(
+        prompt="Deseja carregar todos os dados CSV? (S/N)",
+        validator=lambda v: v.upper() in ["S", "N"],
+        error_msg="Entrada invalida. Digite S para Sim ou N para Não.",
+        cancel_key="B",
+    )
+
+    if confirm is None or confirm.upper() == "N":
+        return Screen.BACK
+
+    all_ok: bool = True
+
+    all_ok = album1.load_csv("album1.csv", fig_pool)
+    all_ok = album2.load_csv("album2.csv", fig_pool)
+    all_ok = history.load_csv("history.csv", fig_pool)
+
+    if all_ok:
+        print("Dados carregados com sucesso!\n")
+
+    print_section_end_full()
+
+    nav, _ = get_nav_input()
+    if nav:
+        return nav
+    return Screen.STAY
+
 
 def todo_screen() -> Screen:
     print_section_name_full("TODO")

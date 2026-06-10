@@ -410,7 +410,12 @@ class FigurineAlbum:
 
         return True
 
-    def load_csv(self, filepath: pathlib.Path, examples: FigurineExamples) -> bool:
+    def load_csv(
+        self, filepath: pathlib.Path | str, examples: FigurineExamples
+    ) -> bool:
+        if isinstance(filepath, str):
+            filepath = pathlib.Path(filepath)
+
         if not filepath.exists():
             return False
 

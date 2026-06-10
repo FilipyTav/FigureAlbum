@@ -16,15 +16,15 @@ def main() -> int:
     album: FigurineAlbum = FigurineAlbum()
     album2: FigurineAlbum = FigurineAlbum()
 
-    album.append(examples.get(0))
-    album.append(examples.get(1))
-    album.prepend(examples.get(2))
-    album.append(examples.get(1))
-
-    album2.append(examples.get(3))
-    album2.append(examples.get(5))
-    album2.prepend(examples.get(5))
-    album2.append(examples.get(7))
+    # album.append(examples.get(0))
+    # album.append(examples.get(1))
+    # album.prepend(examples.get(2))
+    # album.append(examples.get(1))
+    #
+    # album2.append(examples.get(3))
+    # album2.append(examples.get(5))
+    # album2.prepend(examples.get(5))
+    # album2.append(examples.get(7))
 
     menu: MenuManager = MenuManager(AppState(album, album2, history, examples))
     menu.run()
