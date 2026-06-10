@@ -2,10 +2,12 @@ import os
 
 from structs.Album import FigurineAlbum
 from structs.Figurine import Figurine
+from structs.Queue import FigurineQueue
 from utils.colors import Colors
 from utils.config import TOTAL_FIGURINES
 from utils.figurine_examples import FigurineExamples
 from utils.strings import (
+    SEPARATOR,
     centered_msg,
     centered_msg_full,
     format_error,
@@ -360,7 +362,9 @@ def alb_display_repeated(album: FigurineAlbum) -> Screen:
     return Screen.STAY
 
 
-def alb_propose_exchange(album1: FigurineAlbum, album2: FigurineAlbum) -> Screen:
+def alb_propose_exchange(
+    album1: FigurineAlbum, album2: FigurineAlbum, history: FigurineQueue
+) -> Screen:
     print_section_name_full("Propor troca")
     print(centered_msg_full("Troque!"))
     print_section_end_full()
@@ -370,17 +374,28 @@ def alb_propose_exchange(album1: FigurineAlbum, album2: FigurineAlbum) -> Screen
     figs1: list[Figurine] = album1.get_figurines()
     figs2: list[Figurine] = album2.get_figurines()
 
+    reg1: dict = album1.get_registry()
+    reg2: dict = album2.get_registry()
+
     print(f"\n{c.BOLD}Suas Figurinhas:{c.RESET}")
-    print(f"{c.DARK_GRAY}  ------------------------------------------------{c.RESET}")
+    print(SEPARATOR)
     for fig in figs1:
-        cor_raridade = getattr(c, fig.rarity.name, c.WHITE)
-        print(f"  [{cor_raridade}{fig.id:02d}{c.RESET}] {fig.name:<22}")
+        rarity_color = getattr(c, fig.rarity.name, c.WHITE)
+        qtd_repeated = reg1.get(fig.id, 1) - 1
+        txt_repetidas = (
+            f" ({c.RED}+{qtd_repeated}{c.RESET})" if qtd_repeated > 0 else ""
+        )
+        print(f"  [{rarity_color}{fig.id:02d}{c.RESET}] {fig.name:<22}{txt_repetidas}")
 
     print(f"\n{c.BOLD}Figurinhas do oponente:{c.RESET}")
-    print(f"{c.DARK_GRAY}  ------------------------------------------------{c.RESET}")
+    print(SEPARATOR)
     for fig in figs2:
-        cor_raridade = getattr(c, fig.rarity.name, c.WHITE)
-        print(f"  [{cor_raridade}{fig.id:02d}{c.RESET}] {fig.name:<22}")
+        rarity_color = getattr(c, fig.rarity.name, c.WHITE)
+        qtd_repeated = reg2.get(fig.id, 1) - 1
+        txt_repetidas = (
+            f" ({c.RED}+{qtd_repeated}{c.RESET})" if qtd_repeated > 0 else ""
+        )
+        print(f"  [{rarity_color}{fig.id:02d}{c.RESET}] {fig.name:<22}{txt_repetidas}")
 
     print_section_end_full()
 
@@ -400,11 +415,12 @@ def alb_propose_exchange(album1: FigurineAlbum, album2: FigurineAlbum) -> Screen
 
     if raw_input is None:
         print(f"\n{c.YELLOW}Troca cancelada.{c.RESET}")
-        return Screen.STAY
+        return Screen.BACK
 
     parts: list[str] = raw_input.split(",")
     give_id: int = int(parts[0].strip())
     take_id: int = int(int(parts[1].strip()))
+
     give_fig: Figurine | None = album1.find_by_id(give_id)
     take_fig: Figurine | None = album2.find_by_id(take_id)
 
@@ -416,8 +432,18 @@ def alb_propose_exchange(album1: FigurineAlbum, album2: FigurineAlbum) -> Screen
         print(format_error(f"Oponente não possui a figurinha com ID: {take_id}"))
         transaction_ok = False
 
-    if not transaction_ok:
+    if not (album1.propose_exchange(album2, give_fig, take_fig, history)):
+        print(
+            format_error(f"As figurinhas não são repetidas em seus respectivos álbuns")
+        )
+        transaction_ok = False
+
+    if transaction_ok:
+        print(f"\n{c.BOLD}{c.LIGHT_GREEN}TROCA REALIZADA COM SUCESSO!{c.RESET}")
+    else:
         print(format_error(f"Transação não concluída"))
+
+    print_section_end_full()
 
     print("\n[A] Remover outra")
     nav, choice = get_nav_input(False)

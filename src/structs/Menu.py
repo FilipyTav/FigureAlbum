@@ -74,7 +74,7 @@ class MenuManager:
                 Screen.ALBUM_EXCHANGE,
                 "Fazer troca",
                 lambda: alb_propose_exchange(
-                    self.state.user_album, self.state.rival_album
+                    self.state.user_album, self.state.rival_album, self.state.history
                 ),
                 Screen.MAIN,
             ),
