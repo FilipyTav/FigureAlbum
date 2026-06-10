@@ -255,6 +255,65 @@ def alb_find_fig(album: FigurineAlbum) -> Screen:
     return Screen.BACK
 
 
+def alb_display_stats(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
+    print_section_name_full("Estatísticas")
+    print(centered_msg_full("Dados"))
+    print_section_end_full()
+    print()
+
+    stats: dict = album.get_statistics(fig_pool)
+
+    c = Colors
+
+    print(f"{c.BOLD}Progresso Geral:{c.RESET}")
+    print(f"  Concluído:       {c.LIGHT_GREEN}{stats['completion_rate']:.1f}%{c.RESET}")
+    print(
+        f"  Colecionadas:    {stats['unique_owned']} de {stats['total_pool']} figuras únicas"
+    )
+    print(f"  Total no album:  {stats['total_items']} unidades totais")
+    print(f"  Repetidas:       {c.YELLOW}{stats['duplicates_count']}{c.RESET}")
+
+    print(f"\n{c.DARK_GRAY}------------------------------------------------{c.RESET}")
+
+    print(f"{c.BOLD}Distribuição por Raridade:{c.RESET}")
+    if not stats["rarity_distribution"]:
+        print(f"  {c.DARK_GRAY}(Nenhuma figura no album){c.RESET}")
+    else:
+        for rarity, count in stats["rarity_distribution"].items():
+            color_prefix = getattr(c, rarity.name, c.WHITE)
+            print(f"  {color_prefix}{rarity.name:<12}{c.RESET} : {count}x")
+
+    print(f"\n{c.DARK_GRAY}------------------------------------------------{c.RESET}")
+
+    print(f"{c.BOLD}Distribuição por Posicao:{c.RESET}")
+    if not stats["position_distribution"]:
+        print(f"  {c.DARK_GRAY}(Nenhuma figura no album){c.RESET}")
+    else:
+        for position, count in stats["position_distribution"].items():
+            print(f"  {c.CYAN}{position.name:<5}{c.RESET} : {count}x")
+
+    print(f"\n{c.DARK_GRAY}------------------------------------------------{c.RESET}")
+
+    print(f"{c.BOLD}Figuras Repetidas em Detalhes:{c.RESET}")
+    if not stats["duplicate_details"]:
+        print(f"  {c.LIGHT_GRAY}Nenhuma figura repetida disponivel.{c.RESET}")
+    else:
+        for fig, dup_qty in stats["duplicate_details"].items():
+            # Color-codes the player's name based on their specific card rarity
+            rarity_color = getattr(c, fig.rarity.name, c.WHITE)
+            print(
+                f"  • {rarity_color}{fig.name:<20}{c.RESET} [ID {fig.id:02d}] : {c.RED}+{dup_qty} repetidas{c.RESET}"
+            )
+
+    print()
+    print_section_end_full()
+
+    nav, _ = get_nav_input()
+    if nav:
+        return nav
+    return Screen.STAY
+
+
 def todo_screen() -> Screen:
     print_section_name_full("TODO")
     print("Screen yet to be implemented")

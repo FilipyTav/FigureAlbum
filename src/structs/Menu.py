@@ -3,6 +3,7 @@ from structs.MenuStack import MenuStack
 from ui.screen_manager import (
     alb_add_fig,
     alb_display,
+    alb_display_stats,
     alb_find_fig,
     alb_rm_fig,
     main_menu,
@@ -47,9 +48,21 @@ class MenuManager:
                 lambda: alb_find_fig(self.state.user_album),
                 Screen.MAIN,
             ),
+            ScreenConfig(
+                Screen.ALBUM_DISPLAY,
+                "Mostrar Álbum",
+                lambda: alb_display(self.state.user_album),
+                Screen.MAIN,
+            ),
+            ScreenConfig(
+                Screen.ALBUM_STATS,
+                "Estatísticas Álbum",
+                lambda: alb_display_stats(
+                    self.state.user_album, self.state.figurine_pool
+                ),
+                Screen.MAIN,
+            ),
             # fmt: off
-            ScreenConfig(Screen.ALBUM_DISPLAY, "Mostrar Álbum", lambda: alb_display(self.state.user_album), Screen.MAIN),
-            ScreenConfig(Screen.ALBUM_STATS, "Estatísticas Álbum", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.ALBUM_SHOW_REPEATED, "Mostrar repetidas", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.ALBUM_EXCHANGE, "Fazer troca", todo_screen, Screen.MAIN),
             ScreenConfig(Screen.SAVE_DATA, "Salvar dados", todo_screen, Screen.MAIN),

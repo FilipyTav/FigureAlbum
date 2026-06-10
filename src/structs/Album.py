@@ -273,8 +273,37 @@ class FigurineAlbum:
         print(f"Total items: {Colors.BOLD}{position_counter - 1}{Colors.RESET}")
         print(SEPARATOR)
 
-    def get_statistics(self) -> None:
-        pass
+    def get_statistics(self, examples: FigurineExamples) -> dict:
+        unique_owned = self.len()
+        completion_rate = self.get_pct_completion()
+        total_duplicates = self.count_repeated()
+        total_items = unique_owned + total_duplicates
+
+        rarity_counts = {}
+        position_counts = {}
+        duplicate_details = {}
+
+        for fig_id, qty in self.__registered.items():
+            fig: Figurine | None = examples.get(fig_id)
+            if not fig:
+                continue
+
+            rarity_counts[fig.rarity] = rarity_counts.get(fig.rarity, 0) + qty
+            position_counts[fig.position] = position_counts.get(fig.position, 0) + qty
+
+            if qty > 1:
+                duplicate_details[fig] = qty - 1
+
+        return {
+            "completion_rate": completion_rate,
+            "unique_owned": unique_owned,
+            "total_pool": examples.len(),
+            "total_items": total_items,
+            "duplicates_count": total_duplicates,
+            "duplicate_details": duplicate_details,
+            "rarity_distribution": rarity_counts,
+            "position_distribution": position_counts,
+        }
 
     def remove_one_copy(self, id: int) -> bool:
         if id not in self.__registered:
