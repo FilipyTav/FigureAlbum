@@ -21,11 +21,22 @@ class MenuManager:
             # ------------
             # Children of MAIN
             # ------------
+            # fmt: off
+            ScreenConfig(Screen.ALBUM_ADD, "Adicionar figuinha", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.ALBUM_REMOVE, "Remover figuinha", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.ALBUM_FIND, "Consultar figurinha", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.ALBUM_DISPLAY, "Mostrar Álbum", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.ALBUM_STATS, "Estatísticas Álbum", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.ALBUM_SHOW_REPEATED, "Mostrar repetidas", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.ALBUM_EXCHANGE, "Fazer troca", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.SAVE_DATA, "Salvar dados", todo_screen, Screen.MAIN),
+            ScreenConfig(Screen.LOAD_DATA, "Carregar dados", todo_screen, Screen.MAIN),
             # ------------
             # Placeholder
             # ------------
             ScreenConfig(Screen.TODO, "(Em breve)", todo_screen, None),
             # ------------
+            # fmt: on
         ]
         self._dispatch_map = {config.id: config.handler for config in self.registry}
 

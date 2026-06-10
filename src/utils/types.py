@@ -6,6 +6,29 @@ from utils.colors import Colors
 
 
 class Screen(Enum):
+    # Album
+    # ------------------------
+    ALBUM_ADD = auto()
+    ALBUM_REMOVE = auto()
+    ALBUM_FIND = auto()
+    ALBUM_DISPLAY = auto()
+    ALBUM_STATS = auto()
+    ALBUM_SHOW_REPEATED = auto()
+
+    ALBUM_EXCHANGE = auto()
+    # ------------------------
+
+    # History
+    # ------------------------
+    HIST_DISPLAY_TRANSACTIONS = auto()
+    # ------------------------
+
+    # General
+    # ------------------------
+    SAVE_DATA = auto()
+    LOAD_DATA = auto()
+    # ------------------------
+
     # Helpers
     # ------------------------
     MAIN = auto()
