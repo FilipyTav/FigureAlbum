@@ -7,6 +7,7 @@ from utils.figurine_examples import FigurineExamples
 from utils.strings import (
     centered_msg,
     centered_msg_full,
+    format_error,
     print_centered_header,
     print_section_end,
     print_section_end_full,
@@ -135,6 +136,79 @@ def alb_rm_fig(album: FigurineAlbum) -> Screen:
     print_section_end_full()
 
     print("\n[A] Remover outra")
+    nav, choice = get_nav_input(False)
+    if nav:
+        return nav
+
+    match choice:
+        case "a":
+            return Screen.STAY
+
+    return Screen.BACK
+
+
+def alb_find_fig(album: FigurineAlbum) -> Screen:
+    screen_clear()
+
+    print_section_name_full("CONSULTAR FIGURINHA")
+    print(centered_msg_full("Qual consultar?"))
+
+    if album.is_empty():
+        print(centered_msg("Álbum vazio"))
+        print_section_end_full()
+
+        nav, _ = get_nav_input()
+        if nav:
+            return nav
+
+    op: str | None = get_and_validate_input(
+        "Buscar por ID[1] | Nome[2] | Seleção[3]",
+        create_range_validator(1, 3),
+        "Escolha uma das opções",
+        cancel_key="B",
+    )
+
+    if not op:
+        return Screen.BACK
+
+    error_msg: str = ""
+    match op:
+        case "1":
+            id_str: str | None = get_and_validate_input(
+                f"Busca por ID[{0}, {album.len() - 1}]",
+                create_range_validator(0, album.len() - 1),
+                "ID deve ser um número natural entre [0, 2]!",
+                cancel_key="B",
+            )
+
+            if not id_str:
+                return Screen.BACK
+
+            id: int = int(id_str)
+
+            fig: Figurine | None = album.find_by_id(id)
+            if fig:
+                print_section_end_full()
+                print()
+                fig.display_as_card()
+            else:
+                error_msg = f"Não foi possível econtrar música (ID:{id}) na biblioteca."
+
+        case "2":
+            pass
+
+        case "3":
+            pass
+
+        case _:
+            print(format_error(error_msg))
+
+    if error_msg:
+        print(format_error(error_msg))
+
+    print_section_end_full()
+
+    print("\n[A] Consultar outra")
     nav, choice = get_nav_input(False)
     if nav:
         return nav
