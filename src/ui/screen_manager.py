@@ -528,6 +528,32 @@ def gen_load_data(
         return nav
     return Screen.STAY
 
+def gen_draw_figs(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
+    print_section_name_full("Sorte")
+    print(centered_msg_full("Puxe as cartas"))
+    print_section_end_full()
+
+    print("Você conseguiu as seguintes cartas:")
+
+    new_figs: list[Figurine] = fig_pool.draw_pack(5)
+    for f in new_figs:
+        album.append(f)
+        f.display_as_card()
+
+    print_section_end_full()
+
+    print("\n[A] Tentar novamente")
+    nav, choice = get_nav_input(False)
+    if nav:
+        return nav
+
+    match choice:
+        case "a":
+            return Screen.STAY
+
+    return Screen.BACK
+
+
 def hist_display(history: FigurineQueue) -> Screen:
     print_section_name_full("Histórico de transações")
     print()

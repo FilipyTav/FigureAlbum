@@ -8,6 +8,7 @@ from ui.screen_manager import (
     alb_find_fig,
     alb_propose_exchange,
     alb_rm_fig,
+    gen_draw_figs,
     gen_load_data,
     gen_save_data,
     hist_display,
@@ -84,6 +85,12 @@ class MenuManager:
                 Screen.HIST_DISPLAY_TRANSACTIONS,
                 "Histórico de transações",
                 lambda: hist_display(self.state.history),
+                Screen.MAIN,
+            ),
+            ScreenConfig(
+                Screen.DRAW_FIGS,
+                "Tentar a sorte",
+                lambda: gen_draw_figs(self.state.user_album, self.state.figurine_pool),
                 Screen.MAIN,
             ),
             ScreenConfig(

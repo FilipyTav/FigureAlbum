@@ -27,6 +27,7 @@ class Screen(Enum):
     # ------------------------
     SAVE_DATA = auto()
     LOAD_DATA = auto()
+    DRAW_FIGS = auto()
     # ------------------------
 
     # Helpers
