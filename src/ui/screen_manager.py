@@ -424,16 +424,22 @@ def alb_propose_exchange(
     give_fig: Figurine | None = album1.find_by_id(give_id)
     take_fig: Figurine | None = album2.find_by_id(take_id)
 
+    error_msgs: list[str] = []
+
     if give_fig is None:
-        print(format_error(f"Você não possui a figurinha com ID: {give_id}"))
+        error_msgs.append(
+            format_error(f"Você não possui a figurinha com ID: {give_id}")
+        )
         transaction_ok = False
 
     if take_fig is None:
-        print(format_error(f"Oponente não possui a figurinha com ID: {take_id}"))
+        error_msgs.append(
+            format_error(f"Oponente não possui a figurinha com ID: {take_id}")
+        )
         transaction_ok = False
 
     if not (album1.propose_exchange(album2, give_fig, take_fig, history)):
-        print(
+        error_msgs.append(
             format_error(f"As figurinhas não são repetidas em seus respectivos álbuns")
         )
         transaction_ok = False
@@ -441,11 +447,13 @@ def alb_propose_exchange(
     if transaction_ok:
         print(f"\n{c.BOLD}{c.LIGHT_GREEN}TROCA REALIZADA COM SUCESSO!{c.RESET}")
     else:
-        print(format_error(f"Transação não concluída"))
+        error_msgs.append(format_error(f"Transação não concluída"))
+
+    [print(e) for e in error_msgs]
 
     print_section_end_full()
 
-    print("\n[A] Remover outra")
+    print("\n[A] Tentar novamente")
     nav, choice = get_nav_input(False)
     if nav:
         return nav
