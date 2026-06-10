@@ -70,6 +70,20 @@ def alb_add_fig(album: FigurineAlbum, fig_pool: FigurineExamples) -> Screen:
 
     album.append(fig_pool.get(id))
 
+    print()
+    print_section_end_full()
+
+    print("\n[A] Adicionar outra")
+    nav, choice = get_nav_input(False)
+    if nav:
+        return nav
+
+    match choice:
+        case "a":
+            return Screen.STAY
+
+    return Screen.BACK
+
     return Screen.BACK
 
 
