@@ -151,7 +151,7 @@ def alb_find_fig(album: FigurineAlbum) -> Screen:
     screen_clear()
 
     print_section_name_full("CONSULTAR FIGURINHA")
-    print(centered_msg_full("Qual consultar?"))
+    print(centered_msg_full("Como consultar?"))
 
     if album.is_empty():
         print(centered_msg("Álbum vazio"))
@@ -175,7 +175,7 @@ def alb_find_fig(album: FigurineAlbum) -> Screen:
     match op:
         case "1":
             id_str: str | None = get_and_validate_input(
-                f"Busca por ID[{0}, {album.len() - 1}]",
+                f"Busca por {Colors.BOLD}ID{Colors.RESET}[{0}, {album.len() - 1}]",
                 create_range_validator(0, album.len() - 1),
                 "ID deve ser um número natural entre [0, 2]!",
                 cancel_key="B",
@@ -192,10 +192,27 @@ def alb_find_fig(album: FigurineAlbum) -> Screen:
                 print()
                 fig.display_as_card()
             else:
-                error_msg = f"Não foi possível econtrar música (ID:{id}) na biblioteca."
+                error_msg = f"Não foi possível encontrar figurinha (ID:{id}) no álbum."
 
         case "2":
-            pass
+            name: str | None = get_and_validate_input(
+                f"Busca por {Colors.BOLD}Nome{Colors.RESET}",
+                None,
+                "Nome não pode estar vazio!",
+                cancel_key="B",
+            )
+
+            if not name:
+                return Screen.BACK
+
+            fig: Figurine | None = album.find_by_name(name)
+
+            if fig:
+                print_section_end_full()
+                print()
+                fig.display_as_card()
+            else:
+                error_msg = f"Não foi possível encontrar '{name}' no álbum."
 
         case "3":
             pass
@@ -204,6 +221,7 @@ def alb_find_fig(album: FigurineAlbum) -> Screen:
             print(format_error(error_msg))
 
     if error_msg:
+        print()
         print(format_error(error_msg))
 
     print_section_end_full()
